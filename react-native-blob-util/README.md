@@ -1,8 +1,8 @@
 # iOS multipart: failed read becomes a successful empty file part
 
-This reproduction executes the unchanged `buildFormBody:boundary:onComplete:` method extracted from `react-native-blob-util@0.25.1`. It replaces only `ReactNativeBlobUtilFS` with a controlled callback and suppresses diagnostics. It does not reimplement the multipart builder or send a network request.
+This reproduction executes the unchanged `buildFormBody:boundary:onComplete:` method extracted from `react-native-blob-util@0.25.1`. It replaces only `ReactNativeBlobUtilFS` with a controlled callback and suppresses diagnostics.
 
-Requirements: macOS, Xcode Command Line Tools (`clang++` and Foundation), Python 3. No npm installation, application, credentials, or third-party Python packages are needed.
+Requirements: macOS, Xcode Command Line Tools (`clang++` and Foundation), Python 3.
 
 ## Obtain the official package
 
@@ -41,7 +41,7 @@ nonempty-file: PASS (callbacks=1, error=false, expected_error=false)
 4 cases; 1 failure(s)
 ```
 
-The actual 0.25.1 `ReactNativeBlobUtilFS.mm` can supply `(nil, nil, nil)`: after checking that a path exists, it calls `NSData dataWithContentsOfFile:` without checking the resulting data, then invokes the callback with nil error for `encoding:nil`. A read failure after the existence check can therefore reach the builder as nil content. The controlled boundary makes that outcome deterministic; it is not an iOS device permission test.
+The actual 0.25.1 `ReactNativeBlobUtilFS.mm` can supply `(nil, nil, nil)`: after checking that a path exists, it calls `NSData dataWithContentsOfFile:` without checking the resulting data, then invokes the callback with nil error for `encoding:nil`. A read failure after the existence check can therefore reach the builder as nil content. The fixture supplies that nil callback result.
 
 ## Check the minimal correction
 
@@ -54,5 +54,3 @@ python3 reproduce-ios-multipart.py --sdk ./package
 ```
 
 Expected exit status: **0**, with all four cases passing. The correction rejects nil content without rejecting a legitimate zero-byte `NSData` result. The script prints hashes of the supplied source and extracted method so each result can be tied to the bytes actually compiled.
-
-The compiler may print two existing builder warnings about `NSData`/`NSMutableData` and the recursively captured block. They are separate from the assertions above. This checks the real Objective-C method against Foundation and controlled callbacks, not a full iOS target, device, or server upload.

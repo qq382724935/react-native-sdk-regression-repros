@@ -1,30 +1,28 @@
-# [2.3.2][Android] moveCamera 忽略仅 zoom 的输入，更新 target 又重置未提供字段
+# [Android] 单独调整地图缩放不生效，移动中心点会重置地图视角
 
-公开 `CameraUpdate.target/zoom/tilt/bearing` 都是可选字段，但 Android CameraManager.moveCamera 仅在 target 存在时更新相机；并用全新 Builder 构建 target 更新，从而重置没有提供的视野字段。
+### 最小复现
 
-独立复现编译执行实际发行方法，AMap 为受控边界。初始 zoom/tilt/bearing=12/20/30：只传 `{zoom:16}` 后仍为 12；随后只传 target，三个视野字段变为 0/0/0。
+[复现代码](https://github.com/qq382724935/react-native-sdk-regression-repros/tree/main/ble-and-gaode) — expo-gaode-map 2.3.2。
 
-建议从当前相机建立 Builder，仅更新实际提供的字段。同一复现得到 zoom=16，随后仍保留 16/20/30。复现中的最小修正保留原 Handler 调度；本报告不要求动画完成回执或改变 Promise 完成时机。
+### 复现步骤
 
-未执行真机地图或完整 Expo 宿主；这里证明的是公开可选输入与实际相机方法的不一致。检索本仓现有记录，#3 是相机事件能力请求，未发现相同部分输入问题。
+1. 当前地图缩放为 12，倾斜角为 20，方向角为 30。
+2. 调用 `moveCamera({ zoom: 16 })`。
+3. 再调用 `moveCamera({ target: { latitude: 39.9, longitude: 116.4 } })`。
 
-Reproduction: [standalone source and fixtures](https://github.com/qq382724935/react-native-sdk-regression-repros/tree/main/ble-and-gaode).
+运行：`python3 run.py gaode-camera`。
 
-```sh
-python3 run.py gaode-camera
+**预期：** 第二步缩放变为 16；第三步只移动中心点，保留缩放和角度。
+
+**实际：** 第二步没有变化；第三步把缩放、倾斜角和方向角都重置为 0。
+
+### 相关代码
+
+```kotlin
+if (target != null) {
+    val builder = CameraPosition.Builder().target(latLng)
+    // Apply supplied zoom, tilt and bearing.
+}
 ```
 
-Actual before output:
-```text
-zoom-only: zoom=12.0
-target-only: zoom=0.0, tilt=0.0, bearing=0.0
-```
-
-Actual fix output:
-```text
-zoom-only: zoom=16.0
-target-only: zoom=16.0, tilt=20.0, bearing=30.0
-```
-
-
-Environment: macOS 27.0.1; Node 22.23.3, Python 3.9.6, JDK 17 / Kotlin CLI for Android-method cases, Swift 6.4 / Foundation for iOS-method cases. Consumer React Native version: 0.88.0. No full-app or physical-device reproduction is claimed. Prepared with AI assistance; the published methods and before/fix commands were checked locally.
+从当前 `aMap.cameraPosition` 创建 Builder，只修改传入的字段；没有 target 时也应处理 zoom、tilt 和 bearing。
