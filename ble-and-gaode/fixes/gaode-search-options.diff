@@ -1,0 +1,20 @@
+--- upstream/SOURCE
++++ fixed/SOURCE
+@@ -11,7 +11,7 @@
+         
+         val query = PoiSearchV2.Query(keyword, types, city)
+         query.pageSize = pageSize
+-        query.pageNum = pageNum - 1 // 高德 SDK 从 0 开始
++        query.pageNum = pageNum
+           query.showFields = PoiSearchV2.ShowFields(PoiSearchV2.ShowFields.ALL)
+         
+         val poiSearch = PoiSearchV2(context, query)
+@@ -70,7 +70,7 @@
+         
+         val point = LatLonPoint(latitude, longitude)
+         val query = RegeocodeQuery(point, radius, GeocodeSearch.AMAP)
+-        query.extensions = "all"
++        query.extensions = if (options["requireExtension"] as? Boolean != false) "all" else "base"
+         
+         geocodeSearch.getFromLocationAsyn(query)
+       } catch (e: Exception) {

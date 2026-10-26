@@ -1,0 +1,38 @@
+{
+  "case": "all",
+  "exitCode": 1,
+  "source": {
+    "AudioStream.kt": {
+      "sha256": "98700a145f31e2348d388a6e987ccc3b66e7555ad7be7687a405028fc643f252",
+      "unchanged": true
+    },
+    "AudioStreamFileWriter.kt": {
+      "sha256": "45121f676b63f1c74a93cabfba462df3029938348cc432e727c5e2e796c1fd7e",
+      "unchanged": true
+    },
+    "AudioRecords.kt": {
+      "sha256": "64b2fbb01cd74763c1acb7f46157a73b7ab764020ed26c02a2414094459d9808",
+      "extractedDeclarations": [
+        "AudioStreamEncoding",
+        "AudioStreamOptions",
+        "AudioStreamFileFormat",
+        "AudioStreamFileRecordingResult"
+      ]
+    },
+    "AudioExceptions.kt": {
+      "sha256": "548e619a021a89ec5e7fccdea8daf063719af28635bd541e23c63440743edaae",
+      "extractedDeclarations": [
+        "AudioStreamUnsupportedConfigException",
+        "AudioStreamInitializationException",
+        "AudioStreamFileException"
+      ]
+    }
+  },
+  "evidence": [
+    "stop_exception: releaseCount=0, stopCount=1, isStreaming=false, expected releaseCount=1, passed=false",
+    "dead_object: reads=10, isStreaming=true, releaseCount=0, statuses=[true], expected no retry of the invalid recorder and inactive state, passed=false",
+    "status_snapshot: statuses=[false, false], expected=[true, false], passed=false",
+    "stale_buffer: oldFramesDeliveredAfterRestart=1, statuses=[true, true, true], expected oldFramesDeliveredAfterRestart=0, passed=false",
+    "SUMMARY failures=4"
+  ]
+}

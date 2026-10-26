@@ -1,0 +1,25 @@
+data class LatLng(val latitude:Double,val longitude:Double)
+class CameraPosition(val target:LatLng,val zoom:Float,val tilt:Float,val bearing:Float){
+ class Builder(private val initial:CameraPosition=CameraPosition(LatLng(0.0,0.0),0f,0f,0f)){
+  private var point=initial.target;private var zoom=initial.zoom;private var tilt=initial.tilt;private var bearing=initial.bearing
+  fun target(value:LatLng)=apply{point=value};fun zoom(value:Float)=apply{zoom=value};fun tilt(value:Float)=apply{tilt=value};fun bearing(value:Float)=apply{bearing=value}
+  fun build()=CameraPosition(point,zoom,tilt,bearing)
+ }
+}
+object CameraUpdateFactory{fun newCameraPosition(value:CameraPosition)=value}
+class AMap{var cameraPosition=CameraPosition(LatLng(31.0,121.0),12f,20f,30f);fun moveCamera(value:CameraPosition){cameraPosition=value};fun animateCamera(value:CameraPosition,duration:Long,callback:Any?){cameraPosition=value}}
+object Looper{fun getMainLooper()=Unit}
+class Handler(looper:Unit){fun post(task:()->Unit){tasks.add(task)};companion object{val tasks=mutableListOf<()->Unit>();fun drain(){tasks.toList().also{tasks.clear()}.forEach{it()}}}}
+class CameraManager(private val aMap:AMap){
+ private val mainHandler=Handler(Looper.getMainLooper())
+ // SOURCE
+}
+fun main(){
+ val map=AMap();val camera=CameraManager(map)
+ camera.moveCamera(mapOf("zoom" to 16),0);Handler.drain()
+ println("zoom-only: zoom=${map.cameraPosition.zoom}")
+ check(map.cameraPosition.zoom==(if(FIXED_MODE)16f else 12f))
+ camera.moveCamera(mapOf("target" to mapOf("latitude" to 1.0,"longitude" to 2.0)),0);Handler.drain()
+ val p=map.cameraPosition;println("target-only: zoom=${p.zoom}, tilt=${p.tilt}, bearing=${p.bearing}")
+ check(listOf(p.zoom,p.tilt,p.bearing)==if(FIXED_MODE)listOf(16f,20f,30f)else listOf(0f,0f,0f))
+}

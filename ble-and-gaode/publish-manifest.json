@@ -1,0 +1,82 @@
+[
+  {
+    "case": "ble-disabled-scan",
+    "action": "create_issue",
+    "repository": "innoveit/react-native-ble-manager",
+    "title": "[12.6.0][Android] scan() never invokes its callback when Bluetooth is disabled",
+    "body_file": "issues/ble-disabled-scan.md",
+    "command": "python3 run.py ble-disabled-scan",
+    "reproduction_url_placeholder": "REPRO_URL"
+  },
+  {
+    "case": "ble-ios-timer",
+    "action": "create_issue",
+    "repository": "innoveit/react-native-ble-manager",
+    "title": "[12.6.0][iOS] A previous finite scan timer stops a replacement unlimited scan",
+    "body_file": "issues/ble-ios-timer.md",
+    "command": "python3 run.py ble-ios-timer",
+    "reproduction_url_placeholder": "REPRO_URL"
+  },
+  {
+    "case": "gaode-search-options",
+    "action": "create_issue",
+    "repository": "TomWq/expo-gaode-map",
+    "title": "[2.3.2][Android] pageNum 减一且 requireExtension=false 仍发送 all",
+    "body_file": "issues/gaode-search-options.md",
+    "command": "python3 run.py gaode-search-options",
+    "reproduction_url_placeholder": "REPRO_URL"
+  },
+  {
+    "case": "gaode-camera",
+    "action": "create_issue",
+    "repository": "TomWq/expo-gaode-map",
+    "title": "[2.3.2][Android] moveCamera 忽略仅 zoom 的输入，更新 target 又重置未提供字段",
+    "body_file": "issues/gaode-camera.md",
+    "command": "python3 run.py gaode-camera",
+    "reproduction_url_placeholder": "REPRO_URL"
+  },
+  {
+    "case": "gaode-circle-color",
+    "action": "create_issue",
+    "repository": "TomWq/expo-gaode-map",
+    "title": "[2.3.2][Android] Circle 公开支持的数字 ARGB 直接进入 String 原生属性",
+    "body_file": "issues/gaode-circle-color.md",
+    "command": "python3 run.py gaode-circle-color",
+    "reproduction_url_placeholder": "REPRO_URL"
+  },
+  {
+    "case": "gaode-missing-coordinates",
+    "action": "create_issue",
+    "repository": "TomWq/expo-gaode-map",
+    "title": "[2.3.2][iOS] POI 没有原生 location 时被序列化为 (0,0)",
+    "body_file": "issues/gaode-missing-coordinates.md",
+    "command": "python3 run.py gaode-missing-coordinates",
+    "reproduction_url_placeholder": "REPRO_URL"
+  },
+  {
+    "case": "gaode-search-initialization",
+    "action": "create_issue",
+    "repository": "TomWq/expo-gaode-map",
+    "title": "[2.3.2][Android] 公开 initSDK 的运行时 key 未被搜索模块采用",
+    "body_file": "issues/gaode-search-initialization.md",
+    "command": "python3 run.py gaode-search-initialization",
+    "reproduction_url_placeholder": "REPRO_URL"
+  },
+  {
+    "case": "gaode-single-location-cleanup",
+    "action": "create_issue",
+    "repository": "TomWq/expo-gaode-map",
+    "title": "[2.3.2][Android] 单次定位配置异常后，已创建 client 没有停止与销毁",
+    "body_file": "issues/gaode-single-location-cleanup.md",
+    "command": "python3 run.py gaode-single-location-cleanup",
+    "reproduction_url_placeholder": "REPRO_URL"
+  },
+  {
+    "case": "ble-null-record",
+    "action": "reference_only",
+    "repository": "innoveit/react-native-ble-manager",
+    "existing_url": "https://github.com/innoveit/react-native-ble-manager/pull/340",
+    "command": "python3 run.py ble-null-record",
+    "instruction": "Do not create an issue or post a comment for this existing record."
+  }
+]

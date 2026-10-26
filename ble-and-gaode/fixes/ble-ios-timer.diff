@@ -1,0 +1,17 @@
+--- upstream/SOURCE
++++ fixed/SOURCE
+@@ -60,12 +60,10 @@
+             options: options
+         )
+ 
++        scanTimer?.invalidate()
++        scanTimer = nil
+         let timeoutSeconds = scanningOptions["seconds"] as? Double ?? 0
+         if timeoutSeconds > 0 {
+-            if let scanTimer = scanTimer {
+-                scanTimer.invalidate()
+-                self.scanTimer = nil
+-            }
+             DispatchQueue.main.async {
+                 self.scanTimer = Timer.scheduledTimer(
+                     timeInterval: timeoutSeconds,

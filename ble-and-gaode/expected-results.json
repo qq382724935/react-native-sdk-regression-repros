@@ -1,0 +1,38 @@
+{
+  "ble-disabled-scan": {
+    "before": "disabled adapter: callbackCount=0, nativeScanCount=0",
+    "fix": "disabled adapter: callbackCount=1, nativeScanCount=0\ncallback error=Bluetooth is not enabled"
+  },
+  "ble-ios-timer": {
+    "before": "finite -> unlimited: oldTimerValid=true, stopCalls=1, callbacks=2",
+    "fix": "finite -> unlimited: oldTimerValid=false, stopCalls=0, callbacks=2"
+  },
+  "ble-null-record": {
+    "before": "null ScanRecord: NullPointerException=true",
+    "fix": "null ScanRecord: NullPointerException=false"
+  },
+  "gaode-search-options": {
+    "before": "requested pages=[1, 2]; captured pageNum assignments=[0, 1]\nrequireExtension=false; dispatched extensions=all",
+    "fix": "requested pages=[1, 2]; captured pageNum assignments=[1, 2]\nrequireExtension=false; dispatched extensions=base"
+  },
+  "gaode-camera": {
+    "before": "zoom-only: zoom=12.0\ntarget-only: zoom=0.0, tilt=0.0, bearing=0.0",
+    "fix": "zoom-only: zoom=16.0\ntarget-only: zoom=16.0, tilt=20.0, bearing=30.0"
+  },
+  "gaode-circle-color": {
+    "before": "{\"fillColor\":-2147483648,\"strokeColor\":0,\"nativePropType\":\"string\"}",
+    "fix": "{\"fillColor\":\"#80000000\",\"strokeColor\":\"#00000000\",\"nativePropType\":\"string\"}"
+  },
+  "gaode-missing-coordinates": {
+    "before": "missing native coordinate -> [0.0, 0.0]\nreal native (0, 0) remains (0, 0)",
+    "fix": "missing native coordinate -> absent\nreal native (0, 0) remains (0, 0)"
+  },
+  "gaode-search-initialization": {
+    "before": "runtime init key accepted by search=false; searchKeyMatches=false",
+    "fix": "runtime init key accepted by search=true; searchKeyMatches=true"
+  },
+  "gaode-single-location-cleanup": {
+    "before": "configuration exception escaped=true, rejectionCount=0, stopCount=0, destroyCount=0",
+    "fix": "configuration exception escaped=false, rejectionCount=1, stopCount=1, destroyCount=1"
+  }
+}

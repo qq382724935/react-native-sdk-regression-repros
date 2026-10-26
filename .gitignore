@@ -1,0 +1,11 @@
+**/.build/
+**/out/
+**/.tools/
+**/sdk/
+**/package/
+**/__pycache__/
+*.tgz
+*.zip
+*.jar
+*.class
+.DS_Store

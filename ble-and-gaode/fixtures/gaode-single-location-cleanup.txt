@@ -1,0 +1,25 @@
+import java.util.concurrent.atomic.AtomicBoolean
+class Promise{var rejections=0;fun resolve(value:Any?){};fun reject(code:String,message:String,cause:Throwable?){rejections++}}
+class AMapLocationClientOption{var isOnceLocation=false;var isNeedAddress=true;var locationMode=0;var httpTimeOut=1000L;var geoLanguage="ZH";fun setMockEnable(value:Boolean){}}
+class AMapLocation{val errorCode=0;val errorInfo="synthetic"}
+class AMapLocationClient(context:Any){
+ companion object{val instances=mutableListOf<AMapLocationClient>();var failConfigure=true}
+ init{instances.add(this)}
+ var stops=0;var destroys=0
+ fun setLocationOption(value:AMapLocationClientOption){if(failConfigure)error("synthetic configure failure")}
+ fun setLocationListener(listener:(AMapLocation?)->Unit){}
+ fun startLocation(){};fun stopLocation(){stops++};fun onDestroy(){destroys++}
+}
+class LocationManager{
+ val appContext=Any();val locationOption:AMapLocationClientOption?=AMapLocationClientOption();val mockEnable=false
+ fun formatLocation(location:AMapLocation)=emptyMap<String,Any>()
+ // SOURCE
+}
+fun main(){
+ val owner=LocationManager();val result=Promise();var escaped=false
+ try{owner.getCurrentLocation(result)}catch(expected:Exception){escaped=true}
+ val client=AMapLocationClient.instances.single()
+ println("configuration exception escaped=$escaped, rejectionCount=${result.rejections}, stopCount=${client.stops}, destroyCount=${client.destroys}")
+ check(escaped!=FIXED_MODE)
+ check(client.stops==(if(FIXED_MODE)1 else 0) && client.destroys==(if(FIXED_MODE)1 else 0))
+}

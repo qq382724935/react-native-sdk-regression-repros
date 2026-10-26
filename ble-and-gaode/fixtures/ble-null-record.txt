@@ -1,0 +1,25 @@
+import java.util.Objects;
+public class Main {
+ static final class BleManager {}
+ static final class ScanRecord { byte[] getBytes(){return new byte[]{1};} }
+ static final class ScanResult {
+  final Object device=new Object();
+  Object getDevice(){return device;} int getRssi(){return -50;} ScanRecord getScanRecord(){return null;}
+ }
+ static class Peripheral {
+  final Object device;final int rssi;final byte[] bytes;
+  Peripheral(Object d,int r,byte[] b,BleManager manager){device=d;rssi=r;bytes=b;}
+ }
+ static final class DefaultPeripheral extends Peripheral {
+  ScanRecord advertisingData; ScanResult scanResult;
+  // SOURCE
+ }
+ public static void main(String[] args){
+  ScanResult input=new ScanResult();boolean crashed=false;
+  try{DefaultPeripheral result=new DefaultPeripheral(new BleManager(),input);
+   assert result.device==input.device && result.rssi==-50 && result.bytes==null;
+  }catch(NullPointerException expected){crashed=true;}
+  System.out.println("null ScanRecord: NullPointerException="+crashed);
+  assert crashed!=FIXED_MODE;
+ }
+}

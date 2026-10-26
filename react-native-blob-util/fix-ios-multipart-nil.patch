@@ -1,0 +1,17 @@
+diff --git a/ios/ReactNativeBlobUtilReqBuilder.mm b/ios/ReactNativeBlobUtilReqBuilder.mm
+index 9e0a221..63b9d04 100644
+--- a/ios/ReactNativeBlobUtilReqBuilder.mm
++++ b/ios/ReactNativeBlobUtilReqBuilder.mm
+@@ -227,9 +227,11 @@ void __block (^getFieldData)(id field) = ^(id field)
+                         orgPath = [ReactNativeBlobUtilFS getPathOfAsset:orgPath];
+ 
+                         [ReactNativeBlobUtilFS readFile:orgPath encoding:nil transformFile:false onComplete:^(NSData *content, NSString* code, NSString * err) {
+-                            if(err != nil)
++                            if(err != nil || content == nil)
+                             {
++                                // A failed file read is not a valid empty file.
+                                 onComplete(formData, YES);
++                                getFieldData = nil;
+                                 return;
+                             }
+                             NSString * filename = [field valueForKey:@"filename"];

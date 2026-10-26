@@ -1,0 +1,8 @@
+SDK version: 0.25.1
+Builder source SHA-256: eb2cd68bae25706d5c727a4f45dfc2bc8e638b8affed272ec0415403315bbea4
+Extracted method SHA-256: 482a8836c763ed866817a9114c3b941e3a0709af32ef74eb84c79b856552ad8e
+nil-content: PASS (callbacks=1, error=true, expected_error=true)
+explicit-error: PASS (callbacks=1, error=true, expected_error=true)
+empty-file: PASS (callbacks=1, error=false, expected_error=false)
+nonempty-file: PASS (callbacks=1, error=false, expected_error=false)
+4 cases; 0 failure(s)

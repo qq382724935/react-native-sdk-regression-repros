@@ -1,0 +1,9 @@
+--- upstream/SOURCE
++++ fixed/SOURCE
+@@ -1,5 +1,5 @@
+ public DefaultPeripheral(BleManager bleManager, ScanResult result) {
+-        super(result.getDevice(), result.getRssi(), Objects.requireNonNull(result.getScanRecord()).getBytes(), bleManager);
++        super(result.getDevice(), result.getRssi(), result.getScanRecord() != null ? result.getScanRecord().getBytes() : null, bleManager);
+         this.advertisingData = result.getScanRecord();
+         this.scanResult = result;
+     }

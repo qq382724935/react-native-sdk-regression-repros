@@ -1,0 +1,5 @@
+stop_exception: releaseCount=0, stopCount=1, isStreaming=false, expected releaseCount=1, passed=false
+dead_object: reads=10, isStreaming=true, releaseCount=0, statuses=[true], expected no retry of the invalid recorder and inactive state, passed=false
+status_snapshot: statuses=[false, false], expected=[true, false], passed=false
+stale_buffer: oldFramesDeliveredAfterRestart=1, statuses=[true, true, true], expected oldFramesDeliveredAfterRestart=0, passed=false
+SUMMARY failures=4

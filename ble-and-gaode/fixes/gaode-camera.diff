@@ -1,0 +1,60 @@
+--- upstream/SOURCE
++++ fixed/SOURCE
+@@ -1,34 +1,27 @@
+ fun moveCamera(position: Map<String, Any>, duration: Int) {
+     mainHandler.post {
+-      @Suppress("UNCHECKED_CAST")
+-      val target = position["target"] as? Map<String, Double>
+-      val zoom = (position["zoom"] as? Number)?.toFloat()
+-      val tilt = (position["tilt"] as? Number)?.toFloat()
+-      val bearing = (position["bearing"] as? Number)?.toFloat()
+-      
+-      if (target != null) {
+-        val lat = target["latitude"] ?: 0.0
+-        val lng = target["longitude"] ?: 0.0
+-        
+-        // 坐标验证
+-        if (lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+-          return@post
+-        }
+-        
+-        val latLng = LatLng(lat, lng)
+-        
+-        val builder = CameraPosition.Builder().target(latLng)
+-        zoom?.let { builder.zoom(it.coerceIn(3f, 20f)) }
+-        tilt?.let { builder.tilt(it.coerceIn(0f, 60f)) }
+-        bearing?.let { builder.bearing(it) }
+-        
+-        val cameraUpdate = CameraUpdateFactory.newCameraPosition(builder.build())
+-        
+-        if (duration > 0) {
+-          aMap.animateCamera(cameraUpdate, duration.toLong(), null)
+-        } else {
+-          aMap.moveCamera(cameraUpdate)
+-        }
++    val current = aMap.cameraPosition
++    val builder = CameraPosition.Builder(current)
++    if (position.containsKey("target") && position["target"] != null) {
++      val target = position["target"] as? Map<*, *>
++        ?: throw IllegalArgumentException("Invalid camera target")
++      val lat = (target["latitude"] as? Number)?.toDouble()
++      val lng = (target["longitude"] as? Number)?.toDouble()
++      require(lat != null && lng != null && lat.isFinite() && lng.isFinite() &&
++        lat in -90.0..90.0 && lng in -180.0..180.0) { "Invalid camera target" }
++      builder.target(LatLng(lat, lng))
++    }
++    fun number(key: String): Float? {
++      val value = position[key] ?: return null
++      val number = (value as? Number)?.toFloat()
++      require(number != null && number.isFinite()) { "Invalid camera $key" }
++      return number
++    }
++    number("zoom")?.let { builder.zoom(it.coerceIn(3f, 20f)) }
++    number("tilt")?.let { builder.tilt(it.coerceIn(0f, 60f)) }
++    number("bearing")?.let { builder.bearing(it) }
++    val update = CameraUpdateFactory.newCameraPosition(builder.build())
++    if (duration > 0) aMap.animateCamera(update, duration.toLong(), null)
++    else aMap.moveCamera(update)
+       }
+-    }
+   }

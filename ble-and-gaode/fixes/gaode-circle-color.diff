@@ -1,0 +1,15 @@
+--- upstream/SOURCE
++++ fixed/SOURCE
+@@ -10,6 +10,12 @@
+     const NativeCircleView = React.useMemo(() => getNativeCircleView(), []);
+     const { center, ...restProps } = props;
+     const normalizedCenter = normalizeLatLng(center);
++    for (const key of ['fillColor', 'strokeColor']) {
++        const color = restProps[key];
++        if (typeof color === 'number' && Number.isInteger(color) && color >= -0x80000000 && color <= 0xffffffff) {
++            restProps[key] = `#${(color >>> 0).toString(16).padStart(8, '0').toUpperCase()}`;
++        }
++    }
+     return (_jsx(NativeCircleView, { center: normalizedCenter, ...restProps }));
+ }
+ const RenderCircle = React.memo(Circle);

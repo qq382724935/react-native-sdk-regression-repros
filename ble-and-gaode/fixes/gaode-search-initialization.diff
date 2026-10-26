@@ -1,0 +1,19 @@
+--- upstream/SETUP
++++ fixed/SETUP
+@@ -26,6 +26,7 @@
+             // 设置 API Key
+             MapsInitializer.setApiKey(androidKey)
+             AMapLocationClient.setApiKey(androidKey)
++            configuredKey = androidKey
+             
+ 
+         } catch (e: Exception) {
+--- upstream/GUARD
++++ fixed/GUARD
+@@ -1,5 +1,5 @@
+ private fun ensureAPIKeyIsSet() {
+-    val apiKey = try {
++    val apiKey = SDKInitializer.configuredKey ?: try {
+       context.packageManager
+         .getApplicationInfo(context.packageName, PackageManager.GET_META_DATA)
+         .metaData

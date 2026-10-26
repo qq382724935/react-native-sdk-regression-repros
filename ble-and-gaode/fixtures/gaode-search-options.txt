@@ -1,0 +1,35 @@
+class Promise{fun resolve(value:Any?){};fun reject(code:String,message:String?,error:Throwable?){throw IllegalStateException(message,error)}}
+class PoiResultV2;class PoiItemV2;class VisualSearchResult;class RegeocodeResult;class GeocodeResult
+class PoiSearchV2(context:Any,val query:Query){
+ class Query(val keyword:String,val types:String,val city:String){var pageSize=20;var pageNum=1;var showFields:ShowFields?=null}
+ class ShowFields(value:Int){companion object{const val ALL=1}}
+ interface OnPoiSearchListener{fun onPoiSearched(result:PoiResultV2?,rCode:Int);fun onPoiItemSearched(item:PoiItemV2?,rCode:Int);fun onVisualSearched(result:VisualSearchResult?,rCode:Int)}
+ fun setOnPoiSearchListener(value:OnPoiSearchListener){}
+ fun searchPOIAsyn(){dispatchedPages.add(query.pageNum)}
+ companion object{val dispatchedPages=mutableListOf<Int>()}
+}
+class LatLonPoint(val latitude:Double,val longitude:Double)
+class RegeocodeQuery(val point:LatLonPoint,val radius:Float,val type:String){var extensions="base"}
+class GeocodeSearch(context:Any){
+ interface OnGeocodeSearchListener{fun onRegeocodeSearched(result:RegeocodeResult?,rCode:Int);fun onGeocodeSearched(result:GeocodeResult?,rCode:Int)}
+ fun setOnGeocodeSearchListener(value:OnGeocodeSearchListener){}
+ fun getFromLocationAsyn(query:RegeocodeQuery){extensions.add(query.extensions)}
+ companion object{const val AMAP="autonavi";val extensions=mutableListOf<String>()}
+}
+class SearchModule{
+ val context=Any();val functions=mutableMapOf<String,(Map<String,Any?>,Promise)->Unit>()
+ fun ensureAPIKeyIsSet(){};fun convertPoiResult(result:PoiResultV2?)=Unit;fun convertRegeocodeResult(result:RegeocodeResult)=Unit
+ fun AsyncFunction(name:String,body:(Map<String,Any?>,Promise)->Unit){functions[name]=body}
+ init{
+ // SOURCE
+ }
+}
+fun main(){
+ val sdk=SearchModule()
+ for(page in 1..2)sdk.functions.getValue("searchPOI")(mapOf("keyword" to "synthetic","pageNum" to page),Promise())
+ sdk.functions.getValue("reGeocode")(mapOf("location" to mapOf("latitude" to 31.0,"longitude" to 121.0),"requireExtension" to false),Promise())
+ println("requested pages=[1, 2]; captured pageNum assignments=${PoiSearchV2.dispatchedPages}")
+ println("requireExtension=false; dispatched extensions=${GeocodeSearch.extensions.single()}")
+ check(PoiSearchV2.dispatchedPages==if(FIXED_MODE)listOf(1,2)else listOf(0,1))
+ check(GeocodeSearch.extensions.single()==if(FIXED_MODE)"base"else"all")
+}

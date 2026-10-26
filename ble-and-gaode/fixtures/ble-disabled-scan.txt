@@ -1,0 +1,24 @@
+import java.util.*;
+public class Main {
+ interface Callback { void invoke(Object... values); }
+ static final class ReadableMap {}
+ static final class Log { static void d(String tag,String message) {} }
+ static final class BluetoothAdapter { boolean isEnabled() { return false; } }
+ static final class Peripheral { boolean isConnected(){return false;} boolean isConnecting(){return false;} }
+ static final class ScanManager { int starts; void scan(ReadableMap options,Callback callback){starts++;callback.invoke();} }
+ static final class BleManager {
+  static final String LOG_TAG="test";
+  final Map<String,Peripheral> peripherals=new HashMap<>();
+  final ScanManager scanManager=new ScanManager();
+  BluetoothAdapter getBluetoothAdapter(){return new BluetoothAdapter();}
+  // SOURCE
+ }
+ public static void main(String[] args) {
+  final List<Object[]> callbacks=new ArrayList<>();
+  BleManager manager=new BleManager();manager.scan(new ReadableMap(),callbacks::add);
+  System.out.println("disabled adapter: callbackCount="+callbacks.size()+", nativeScanCount="+manager.scanManager.starts);
+  if(!callbacks.isEmpty())System.out.println("callback error="+callbacks.get(0)[0]);
+  assert callbacks.size()==(FIXED_MODE?1:0);
+  assert manager.scanManager.starts==0;
+ }
+}

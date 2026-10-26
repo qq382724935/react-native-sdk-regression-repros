@@ -1,0 +1,38 @@
+[
+  {
+    "variant": "upstream",
+    "iteration": 1,
+    "exitCode": 1,
+    "output": "stop_exception: releaseCount=0, stopCount=1, isStreaming=false, expected releaseCount=1, passed=false\ndead_object: reads=10, isStreaming=true, releaseCount=0, statuses=[true], expected no retry of the invalid recorder and inactive state, passed=false\nstatus_snapshot: statuses=[false, false], expected=[true, false], passed=false\nstale_buffer: oldFramesDeliveredAfterRestart=1, statuses=[true, true, true], expected oldFramesDeliveredAfterRestart=0, passed=false\nSUMMARY failures=4\n"
+  },
+  {
+    "variant": "upstream",
+    "iteration": 2,
+    "exitCode": 1,
+    "output": "stop_exception: releaseCount=0, stopCount=1, isStreaming=false, expected releaseCount=1, passed=false\ndead_object: reads=10, isStreaming=true, releaseCount=0, statuses=[true], expected no retry of the invalid recorder and inactive state, passed=false\nstatus_snapshot: statuses=[false, false], expected=[true, false], passed=false\nstale_buffer: oldFramesDeliveredAfterRestart=1, statuses=[true, true, true], expected oldFramesDeliveredAfterRestart=0, passed=false\nSUMMARY failures=4\n"
+  },
+  {
+    "variant": "upstream",
+    "iteration": 3,
+    "exitCode": 1,
+    "output": "stop_exception: releaseCount=0, stopCount=1, isStreaming=false, expected releaseCount=1, passed=false\ndead_object: reads=10, isStreaming=true, releaseCount=0, statuses=[true], expected no retry of the invalid recorder and inactive state, passed=false\nstatus_snapshot: statuses=[false, false], expected=[true, false], passed=false\nstale_buffer: oldFramesDeliveredAfterRestart=1, statuses=[true, true, true], expected oldFramesDeliveredAfterRestart=0, passed=false\nSUMMARY failures=4\n"
+  },
+  {
+    "variant": "candidate",
+    "iteration": 1,
+    "exitCode": 0,
+    "output": "stop_exception: releaseCount=1, stopCount=1, isStreaming=false, expected releaseCount=1, passed=true\ndead_object: reads=1, isStreaming=false, releaseCount=1, statuses=[true, false, false], expected no retry of the invalid recorder and inactive state, passed=true\nstatus_snapshot: statuses=[true, false], expected=[true, false], passed=true\nstale_buffer: oldFramesDeliveredAfterRestart=0, statuses=[true, false, true], expected oldFramesDeliveredAfterRestart=0, passed=true\nSUMMARY failures=0\n"
+  },
+  {
+    "variant": "candidate",
+    "iteration": 2,
+    "exitCode": 0,
+    "output": "stop_exception: releaseCount=1, stopCount=1, isStreaming=false, expected releaseCount=1, passed=true\ndead_object: reads=1, isStreaming=false, releaseCount=1, statuses=[true, false, false], expected no retry of the invalid recorder and inactive state, passed=true\nstatus_snapshot: statuses=[true, false], expected=[true, false], passed=true\nstale_buffer: oldFramesDeliveredAfterRestart=0, statuses=[true, false, true], expected oldFramesDeliveredAfterRestart=0, passed=true\nSUMMARY failures=0\n"
+  },
+  {
+    "variant": "candidate",
+    "iteration": 3,
+    "exitCode": 0,
+    "output": "stop_exception: releaseCount=1, stopCount=1, isStreaming=false, expected releaseCount=1, passed=true\ndead_object: reads=1, isStreaming=false, releaseCount=1, statuses=[true, false, false], expected no retry of the invalid recorder and inactive state, passed=true\nstatus_snapshot: statuses=[true, false], expected=[true, false], passed=true\nstale_buffer: oldFramesDeliveredAfterRestart=0, statuses=[true, false, true], expected oldFramesDeliveredAfterRestart=0, passed=true\nSUMMARY failures=0\n"
+  }
+]

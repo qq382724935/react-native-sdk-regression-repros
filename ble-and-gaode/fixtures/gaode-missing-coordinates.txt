@@ -1,0 +1,25 @@
+import Foundation
+final class AMapGeoPoint {var latitude:Double;var longitude:Double;init(_ a:Double,_ b:Double){latitude=a;longitude=b}}
+final class AMapImage {var title:String?;var url:String?}
+final class Indoor {var floor=0;var floorName:String?;var pid:String?}
+final class Extended {var rating=0.0;var cost=0.0;var openTime:String?}
+final class Business {var alias:String?;var tag:String?;var rating:String?;var cost:String?;var opentimeWeek:String?;var opentimeToday:String?;var tel:String?;var parkingType:String?;var businessArea:String?}
+final class AMapPOI {
+ var uid:String?;var name:String?;var address:String?;var location:AMapGeoPoint?
+ var typecode:String?;var type:String?;var tel:String?;var distance=0
+ var city:String?;var citycode:String?;var province:String?;var district:String?;var adcode:String?
+ var businessArea:String?;var parkingType:String?;var website:String?;var email:String?;var postcode:String?
+ var images:[AMapImage]?;var indoorData:Indoor?;var hasIndoorMap=false;var extensionInfo:Extended?;var businessData:Business?
+}
+final class Serializer {
+ func project(_ poi:AMapPOI)->[String:Any]{convertPOI(poi)}
+ // SOURCE
+}
+let serializer=Serializer();let unknown=AMapPOI();let projected=serializer.project(unknown)
+if let location=projected["location"] as? [String:Double] {print("missing native coordinate -> [\(location["latitude"]!), \(location["longitude"]!)]")}
+else {print("missing native coordinate -> absent")}
+assert((projected["location"]==nil)==FIXED_MODE)
+let zero=AMapPOI();zero.location=AMapGeoPoint(0,0)
+let preserved=serializer.project(zero)["location"] as! [String:Double]
+assert(preserved["latitude"]==0 && preserved["longitude"]==0)
+print("real native (0, 0) remains (0, 0)")

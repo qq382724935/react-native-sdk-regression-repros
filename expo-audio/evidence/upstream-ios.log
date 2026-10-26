@@ -1,0 +1,8 @@
+AudioStream.swift sha256=6738b94de4d4bf93378fe8668d6087c27c310bd10d4689af32c1b06375661f2f
+startup-cleanup: tapInstalled=true, stops=0, sessionActive=true
+FAIL: stop after failed startup must clean up the stream's installed tap and engine
+stereo-layout: actual=[1.0, 2.0, 99.0, 99.0], expected=[1, 3, 2, 4]
+FAIL: stereo samples must be interleaved
+converter-failure: startSucceeded=true, requested=int16, emitted=float32, encodingField=missing
+FAIL: unavailable conversion must not silently change the requested PCM encoding
+3 cases; 3 failure(s)

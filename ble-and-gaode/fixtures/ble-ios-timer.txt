@@ -1,0 +1,33 @@
+import Foundation
+import Dispatch
+typealias RCTResponseSenderBlock = @convention(block) ([Any]?) -> Void
+let CBCentralManagerScanOptionAllowDuplicatesKey="allowDuplicates"
+final class CBUUID: NSObject { init(string: String) {} }
+enum State { case connected, connecting, disconnected }
+final class Device { var state=State.disconnected; var delegate: AnyObject? }
+final class Peripheral { let instance=Device() }
+enum Helper { static func isValidBLEUUID(_ value:String)->Bool{true} }
+final class Central {
+ var starts=0;var stops=0
+ func scanForPeripherals(withServices:[CBUUID]?,options:[String:Any]?){starts+=1}
+ func stopScan(){stops+=1}
+}
+final class Emitter { var stops=0; func emit(onStopScan:[String:Any]){stops+=1} }
+final class Probe: NSObject {
+ var manager:Central?=Central();var bleManager:Emitter?=Emitter();var scanTimer:Timer?
+ let serialQueue=DispatchQueue(label:"probe.serial");var peripherals:[String:Peripheral]=[:];var exactAdvertisingName:[String]=[]
+ // SOURCE
+}
+let probe=Probe();var callbacks=0
+probe.scan(["seconds":60.0,"serviceUUIDs":[]],callback:{_ in callbacks+=1})
+let deadline=Date().addingTimeInterval(1)
+while probe.scanTimer==nil && Date()<deadline { RunLoop.current.run(until:Date().addingTimeInterval(0.001)) }
+guard let originalTimer=probe.scanTimer else { fatalError("Timer was not scheduled") }
+probe.scan(["seconds":0.0,"serviceUUIDs":[]],callback:{_ in callbacks+=1})
+let stillValid=originalTimer.isValid
+originalTimer.fire()
+print("finite -> unlimited: oldTimerValid=\(stillValid), stopCalls=\(probe.manager!.stops), callbacks=\(callbacks)")
+assert(callbacks==2 && probe.manager!.starts==2)
+assert(stillValid != FIXED_MODE)
+assert(probe.manager!.stops == (FIXED_MODE ? 0 : 1))
+originalTimer.invalidate()

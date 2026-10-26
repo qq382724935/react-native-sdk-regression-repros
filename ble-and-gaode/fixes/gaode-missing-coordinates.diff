@@ -1,0 +1,22 @@
+--- upstream/SOURCE
++++ fixed/SOURCE
+@@ -3,10 +3,6 @@
+         "id": poi.uid ?? "",
+         "name": poi.name ?? "",
+         "address": poi.address ?? "",
+-        "location": [
+-          "latitude": poi.location?.latitude ?? 0,
+-          "longitude": poi.location?.longitude ?? 0
+-        ],
+         "typeCode": poi.typecode ?? "",
+         "typeDes": poi.type ?? "",
+         "tel": poi.tel ?? "",
+@@ -84,5 +80,8 @@
+       
+       result["business"] = business
+       
++      if let coordinate = poi.location {
++          result["location"] = ["latitude": coordinate.latitude, "longitude": coordinate.longitude]
++      }
+       return result
+   }

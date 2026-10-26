@@ -1,0 +1,11 @@
+const assert=require('node:assert/strict');
+// React/native view are external boundaries; the published Circle function below is unchanged in before mode.
+const React={memo:value=>value,useMemo:factory=>factory()};
+const createLazyNativeViewManager=name=>()=>name;
+const normalizeLatLng=value=>value;
+const _jsx=(type,props)=>({type,props});
+// SOURCE
+const result=RenderCircle({center:{latitude:31,longitude:121},radius:50,fillColor:-2147483648,strokeColor:0});
+const nativePropType='string';
+console.log(JSON.stringify({fillColor:result.props.fillColor,strokeColor:result.props.strokeColor,nativePropType}));
+assert.deepEqual([result.props.fillColor,result.props.strokeColor],FIXED_MODE?['#80000000','#00000000']:[-2147483648,0]);

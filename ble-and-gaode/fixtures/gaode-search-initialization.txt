@@ -1,0 +1,28 @@
+class Context{val packageName="example.test";val packageManager=PackageManager()}
+class PackageManager{fun getApplicationInfo(name:String,flag:Int)=ApplicationInfo();companion object{const val GET_META_DATA=1}}
+class ApplicationInfo{val metaData:Bundle?=null}
+class Bundle{fun getString(name:String):String?=null}
+class CodedException(code:String,message:String,cause:Throwable?):Exception(message,cause)
+object Log{fun w(tag:String,message:String){}}
+object MapsInitializer{var key:String?=null;fun setApiKey(value:String){key=value};fun updatePrivacyShow(context:Context,shown:Boolean,contains:Boolean){};fun updatePrivacyAgree(context:Context,agreed:Boolean){}}
+object AMapLocationClient{var key:String?=null;fun setApiKey(value:String){key=value};fun updatePrivacyShow(context:Context,shown:Boolean,contains:Boolean){};fun updatePrivacyAgree(context:Context,agreed:Boolean){}}
+object ServiceSettings{
+ var key:String?=null;var shown:Boolean?=null;var contains:Boolean?=null;var agreed:Boolean?=null
+ fun getInstance()=this;fun setApiKey(value:String){key=value}
+ fun updatePrivacyShow(context:Context,s:Boolean,c:Boolean){shown=s;contains=c};fun updatePrivacyAgree(context:Context,a:Boolean){agreed=a}
+}
+object SDKInitializer{
+ var configuredKey:String?=null;val privacyShown=true;val privacyContains=true;val privacyAgreed=true
+ fun resolveContext(context:Context)=context;fun restorePersistedState(context:Context){};fun isPrivacyReady()=privacyShown&&privacyContains&&privacyAgreed
+ // SETUP
+}
+class SearchModule{val context=Context();fun initialize(){ensureAPIKeyIsSet()}
+ // GUARD
+}
+fun main(){
+ val key="synthetic-not-a-service-key";SDKInitializer.initSDK(Context(),key)
+ var accepted=true;try{SearchModule().initialize()}catch(expected:Exception){accepted=false}
+ println("runtime init key accepted by search=$accepted; searchKeyMatches=${ServiceSettings.key==key}")
+ check(MapsInitializer.key==key && AMapLocationClient.key==key)
+ check(accepted==FIXED_MODE && (ServiceSettings.key==key)==FIXED_MODE)
+}
